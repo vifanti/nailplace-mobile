@@ -6,6 +6,7 @@ import { Container, Image, Button, ButtonText } from './styles';
 interface ButtonProps extends ViewProps, TouchableOpacityProperties {
   children: string;
   selected?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any;
 }
 

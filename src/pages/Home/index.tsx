@@ -21,6 +21,7 @@ import {
   ServicesList,
   ServiceContainer,
   ServiceAvatar,
+  ServiceNameContainer,
   ServiceName,
 } from './styles';
 
@@ -33,7 +34,10 @@ export interface Service {
 interface Provider {
   id: number;
   name: string;
-  image: string;
+  user: {
+    name: string;
+    avatar: string;
+  };
   latitude: number;
   longitude: number;
 }
@@ -52,16 +56,15 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     async function loadPosition(): Promise<void> {
-      Geolocation.requestAuthorization;
+      // Geolocation.requestAuthorization;
 
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
         {
-          title: 'Cool Photo App Camera Permission',
+          title: 'NailPlace permissão de localização',
           message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
+            'NailPlace precisa das permissões de locação para mostrar os prestadores disponíveis',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         },
@@ -74,15 +77,10 @@ const Home: React.FC = () => {
         );
         return;
       }
-
       Geolocation.getCurrentPosition((info) => {
         const { latitude, longitude } = info.coords;
         setInitialPosition([latitude, longitude]);
       });
-
-      // Geolocation.getCurrentPosition((position) => {
-
-      // });
     }
 
     loadPosition();
@@ -93,6 +91,16 @@ const Home: React.FC = () => {
       setServices(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    api
+      .get('providers', {
+        params: { selectedServices },
+      })
+      .then((response) => {
+        setProviders(response.data);
+      });
+  }, [selectedServices]);
 
   function handleSelectService(id: number): void {
     const alreadySelected = selectedServices.findIndex(
@@ -145,7 +153,7 @@ const Home: React.FC = () => {
               <Marker
                 key={String(provider.id)}
                 style={{ width: 90, height: 80 }}
-                onPress={() => {}}
+                // onPress={() => { }}
                 coordinate={{
                   latitude: provider.latitude,
                   longitude: provider.longitude,
@@ -154,10 +162,10 @@ const Home: React.FC = () => {
                 <MapMarkerContainer>
                   <MapMarkerImage
                     source={{
-                      uri: provider.image,
+                      uri: provider.user.avatar,
                     }}
                   />
-                  <MapMarkerTitle>{provider.name}</MapMarkerTitle>
+                  <MapMarkerTitle>{provider.user.name}</MapMarkerTitle>
                 </MapMarkerContainer>
               </Marker>
             ))}
@@ -177,13 +185,14 @@ const Home: React.FC = () => {
               selected={!!selectedServices.find((s) => s === service.id)}
               activeOpacity={0.6}
             >
-              <ServiceAvatar source={{ uri: service.image_url }} />
-
-              <ServiceName
-                selected={!!selectedServices.find((s) => s === service.id)}
-              >
-                {service.title}
-              </ServiceName>
+              <ServiceAvatar uri={service.image_url} />
+              <ServiceNameContainer>
+                <ServiceName
+                  selected={!!selectedServices.find((s) => s === service.id)}
+                >
+                  {service.title}
+                </ServiceName>
+              </ServiceNameContainer>
             </ServiceContainer>
           )}
         />

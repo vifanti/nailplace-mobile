@@ -71,9 +71,10 @@ export const MapMarkerImage = styled.Image.attrs({ resizeMode: 'cover' })`
 export const MapMarkerTitle = styled.Text`
   flex: 1;
   font-family: 'Comfortaa-Medium';
-  color: #000;
+  color: #fff;
   font-size: 13px;
   line-height: 23px;
+  text-align: center;
 `;
 
 export const ServiceListContainer = styled.View``;
@@ -91,6 +92,7 @@ export const ServiceContainer = styled.TouchableOpacity<ProviderContainerProps>`
   width: 140px;
 
   margin: 8px;
+  padding: 10px;
 
   border: 2px;
   border-radius: 8px;
@@ -98,18 +100,23 @@ export const ServiceContainer = styled.TouchableOpacity<ProviderContainerProps>`
 
   background: ${(props) => (props.selected ? '#f2b3ca' : '#fff')};
 
-  flex: 1;
   align-items: center;
 `;
 
-export const ServiceAvatar = styled.Image`
-  width: 50px;
-  height: 50px;
-  margin-top: 20px;
+export const ServiceAvatar = styled(SvgUri).attrs({
+  width: '70px',
+  height: '70px',
+})`
+  color: #000;
+`;
+
+export const ServiceNameContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ServiceName = styled.Text<ProviderNameProps>`
-  margin-top: 10px;
   font-family: 'Comfortaa-Medium';
   font-size: 14px;
   color: #000;
