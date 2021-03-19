@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PermissionsAndroid, Alert } from 'react-native';
+import { PermissionsAndroid, Alert, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 // import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
@@ -57,26 +57,28 @@ const Home: React.FC = () => {
   useEffect(() => {
     async function loadPosition(): Promise<void> {
       // Geolocation.requestAuthorization;
-
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-        {
-          title: 'NailPlace permissão de localização',
-          message:
-            'NailPlace precisa das permissões de locação para mostrar os prestadores disponíveis',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        Alert.alert(
-          'Ooooops...',
-          'Precisamos de sua permissão para obter a localização',
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+          {
+            title: 'NailPlace permissão de localização',
+            message:
+              'NailPlace precisa das permissões de locação para mostrar os prestadores disponíveis',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
         );
-        return;
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert(
+            'Ooooops...',
+            'Precisamos de sua permissão para obter a localização',
+          );
+          return;
+        }
       }
+
       Geolocation.getCurrentPosition((info) => {
         const { latitude, longitude } = info.coords;
         setInitialPosition([latitude, longitude]);
@@ -137,7 +139,6 @@ const Home: React.FC = () => {
       </BackButton>
 
       <MapContainer>
-        <Title>Selecione os serviços desejados</Title>
         {initialPosition[0] !== 0 && (
           <MapView
             style={{ width: '100%', height: '100%' }}
@@ -149,6 +150,7 @@ const Home: React.FC = () => {
               longitudeDelta: 0.014,
             }}
           >
+            <Title>Selecione os serviços desejados</Title>
             {providers.map((provider) => (
               <Marker
                 key={String(provider.id)}
@@ -162,7 +164,7 @@ const Home: React.FC = () => {
                 <MapMarkerContainer>
                   <MapMarkerImage
                     source={{
-                      uri: provider.user.avatar,
+                      uri: provider.user.avatar ?? undefined,
                     }}
                   />
                   <MapMarkerTitle>{provider.user.name}</MapMarkerTitle>

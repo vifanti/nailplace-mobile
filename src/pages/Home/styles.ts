@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { FlatList } from 'react-native';
 import { SvgUri } from 'react-native-svg';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { Service } from './index';
 
 interface ProviderContainerProps {
@@ -24,8 +25,10 @@ interface HourTextProps {
 
 export const Container = styled.View`
   flex: 1;
-  /* justify-content: center; */
   background: #fff;
+  border: 2px;
+  border-color: red;
+  margin-bottom: ${getBottomSpace()}px;
 `;
 
 export const BackButton = styled(RectButton)`
@@ -48,7 +51,7 @@ export const Title = styled.Text`
 
 export const MapContainer = styled.View`
   flex: 1;
-  width: 100%;
+  /* width: 100%; */
   overflow: hidden;
   margin-top: 16px;
 `;
@@ -77,21 +80,23 @@ export const MapMarkerTitle = styled.Text`
   text-align: center;
 `;
 
-export const ServiceListContainer = styled.View``;
+export const ServiceListContainer = styled.View`
+  margin-top: -200px;
+`;
 
 export const ServicesList = styled(
   FlatList as new () => FlatList<Service>,
 ).attrs({
   contentContainerStyle: { paddingHorizontal: 8 },
 })`
-  padding: 32px 0;
+  padding: 30px 0;
 `;
 
 export const ServiceContainer = styled.TouchableOpacity<ProviderContainerProps>`
   height: 140px;
   width: 140px;
 
-  margin: 8px;
+  margin: 0 8px;
   padding: 10px;
 
   border: 2px;
