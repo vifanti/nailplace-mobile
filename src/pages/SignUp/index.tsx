@@ -27,6 +27,7 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   const cpfInputRef = useRef<TextInput>(null);
+  const phoneNumberInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const confirmEmailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
@@ -46,11 +47,16 @@ const SignUp: React.FC = () => {
       try {
         formRef.current?.setErrors({});
 
+        const phoneRegExp = /\d{2}\9\d{8}/g;
+
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           cpf: Yup.string()
             .required('CPF obrigatório')
             .max(14, 'No máximo 14 dígitos'),
+          phoneNumber: Yup.string()
+            .required('Número obrigatório')
+            .matches(phoneRegExp, 'O número não é válidp'),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um email válido'),
@@ -129,6 +135,18 @@ const SignUp: React.FC = () => {
               name="cpf"
               icon="credit-card"
               placeholder="CPF"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                phoneNumberInputRef.current?.focus();
+              }}
+            />
+
+            <Input
+              ref={phoneNumberInputRef}
+              keyboardType="number-pad"
+              name="phoneNumber"
+              icon="phone"
+              placeholder="Celular"
               returnKeyType="next"
               onSubmitEditing={() => {
                 emailInputRef.current?.focus();

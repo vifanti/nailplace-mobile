@@ -32,7 +32,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadStoragedData(): Promise<void> {
+    async function loadStorageData(): Promise<void> {
       const [token, user] = await AsyncStorage.multiGet([
         '@NailPlace:token',
         '@NailPlace:user',
@@ -47,7 +47,7 @@ const AuthProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
 
-    loadStoragedData();
+    loadStorageData();
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
