@@ -11,6 +11,7 @@ import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
+  Header,
   BackButton,
   Title,
   MapContainer,
@@ -36,7 +37,7 @@ interface Provider {
   name: string;
   user: {
     name: string;
-    avatar: string;
+    avatar_url: string;
   };
   latitude: number;
   longitude: number;
@@ -100,6 +101,7 @@ const Home: React.FC = () => {
         params: { selectedServices },
       })
       .then((response) => {
+        console.log(response.data);
         setProviders(response.data);
       });
   }, [selectedServices]);
@@ -130,15 +132,17 @@ const Home: React.FC = () => {
     //   contentContainerStyle={{ flexGrow: 1 }}
     // >
     <Container>
-      <BackButton onPress={signOut}>
-        <Icon
-          name="log-out"
-          size={24}
-          style={{ transform: [{ rotate: '180deg' }] }}
-        />
-      </BackButton>
-
       <MapContainer>
+        <Header>
+          <BackButton onPress={signOut}>
+            <Icon
+              name="log-out"
+              size={24}
+              style={{ transform: [{ rotate: '180deg' }] }}
+            />
+          </BackButton>
+          <Title>Selecione os serviços desejados</Title>
+        </Header>
         {initialPosition[0] !== 0 && (
           <MapView
             style={{ width: '100%', height: '100%' }}
@@ -150,7 +154,6 @@ const Home: React.FC = () => {
               longitudeDelta: 0.014,
             }}
           >
-            <Title>Selecione os serviços desejados</Title>
             {providers.map((provider) => (
               <Marker
                 key={String(provider.id)}
@@ -164,7 +167,7 @@ const Home: React.FC = () => {
                 <MapMarkerContainer>
                   <MapMarkerImage
                     source={{
-                      uri: provider.user.avatar ?? undefined,
+                      uri: provider.user.avatar_url ?? undefined,
                     }}
                   />
                   <MapMarkerTitle>{provider.user.name}</MapMarkerTitle>

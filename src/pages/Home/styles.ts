@@ -26,27 +26,34 @@ interface HourTextProps {
 export const Container = styled.View`
   flex: 1;
   background: #fff;
-  border: 2px;
-  border-color: red;
   margin-bottom: ${getBottomSpace()}px;
 `;
 
+export const Header = styled.View`
+  /* position: absolute;
+  z-index: 1;
+  top: 0px; */
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+`;
+
 export const BackButton = styled(RectButton)`
-  margin-top: 40px;
-  margin-left: 10px;
+  /* margin-top: 40px;
+  margin-left: 10px; */
   width: 52px;
   height: 52px;
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: transparent;
   border-radius: 24px;
 `;
 
 export const Title = styled.Text`
+  flex: 1;
   font-size: 24px;
+  margin: 24px 0 24px 10px;
   font-family: 'Comfortaa-Medium';
-  margin: 10px 0 26px 0;
-  margin-left: 20px;
 `;
 
 export const MapContainer = styled.View`
@@ -81,7 +88,7 @@ export const MapMarkerTitle = styled.Text`
 `;
 
 export const ServiceListContainer = styled.View`
-  margin-top: -200px;
+  margin-top: -208px;
 `;
 
 export const ServicesList = styled(
@@ -89,7 +96,7 @@ export const ServicesList = styled(
 ).attrs({
   contentContainerStyle: { paddingHorizontal: 8 },
 })`
-  padding: 30px 0;
+  padding: 34px 0;
 `;
 
 export const ServiceContainer = styled.TouchableOpacity<ProviderContainerProps>`
