@@ -17,10 +17,7 @@ export const Title = styled.Text`
 `;
 
 export const Footer = styled.View`
-  height: 100px;
-  width: 100%;
-
-  padding: 0 14px;
+  padding: 14px;
 
   justify-content: space-between;
   align-items: center;

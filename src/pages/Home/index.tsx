@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PermissionsAndroid, Alert, Platform } from 'react-native';
+import { PermissionsAndroid, Alert, Platform, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 // import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
@@ -101,7 +101,6 @@ const Home: React.FC = () => {
         params: { selectedServices },
       })
       .then((response) => {
-        console.log(response.data);
         setProviders(response.data);
       });
   }, [selectedServices]);
@@ -132,17 +131,18 @@ const Home: React.FC = () => {
     //   contentContainerStyle={{ flexGrow: 1 }}
     // >
     <Container>
+      <Header>
+        <BackButton onPress={signOut}>
+          <Icon
+            name="log-out"
+            size={24}
+            style={{ transform: [{ rotate: '180deg' }] }}
+          />
+        </BackButton>
+        <Title>Selecione os serviços desejados</Title>
+        <Image source={{ uri: 'http://192.168.1.88:3333/files/leila.png' }} />
+      </Header>
       <MapContainer>
-        <Header>
-          <BackButton onPress={signOut}>
-            <Icon
-              name="log-out"
-              size={24}
-              style={{ transform: [{ rotate: '180deg' }] }}
-            />
-          </BackButton>
-          <Title>Selecione os serviços desejados</Title>
-        </Header>
         {initialPosition[0] !== 0 && (
           <MapView
             style={{ width: '100%', height: '100%' }}

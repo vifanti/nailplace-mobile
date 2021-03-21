@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { FlatList } from 'react-native';
 import { SvgUri } from 'react-native-svg';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Service } from './index';
 
 interface ProviderContainerProps {
@@ -26,13 +26,10 @@ interface HourTextProps {
 export const Container = styled.View`
   flex: 1;
   background: #fff;
-  margin-bottom: ${getBottomSpace()}px;
+  padding-top: ${getStatusBarHeight()}px;
 `;
 
 export const Header = styled.View`
-  /* position: absolute;
-  z-index: 1;
-  top: 0px; */
   flex-direction: row;
   align-items: center;
   background: #fff;
@@ -59,8 +56,7 @@ export const Title = styled.Text`
 export const MapContainer = styled.View`
   flex: 1;
   /* width: 100%; */
-  overflow: hidden;
-  margin-top: 16px;
+  /* overflow: hidden; */
 `;
 
 export const MapMarkerContainer = styled.View`
@@ -88,7 +84,9 @@ export const MapMarkerTitle = styled.Text`
 `;
 
 export const ServiceListContainer = styled.View`
-  margin-top: -208px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0px;
 `;
 
 export const ServicesList = styled(

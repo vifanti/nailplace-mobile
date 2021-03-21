@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import Index from '../pages/Index';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
@@ -11,7 +12,10 @@ const AuthRoutes: React.FC = () => (
   <Auth.Navigator
     screenOptions={{
       headerShown: false,
-      cardStyle: { backgroundColor: '#fff' },
+      cardStyle: {
+        backgroundColor: '#fff',
+        paddingBottom: getBottomSpace(),
+      },
     }}
   >
     <Auth.Screen name="Index" component={Index} />
