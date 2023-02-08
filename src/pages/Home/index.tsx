@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PermissionsAndroid, Alert, Platform, Image } from 'react-native';
+import { PermissionsAndroid, Alert, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 // import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
@@ -51,6 +51,10 @@ const Home: React.FC = () => {
     0,
     0,
   ]);
+  const [
+    androidLocationPermissionIsGranted,
+    setAndroidLocationPermissionIsGranted,
+  ] = useState(false);
 
   // const navigation = useNavigation();
   const { signOut } = useAuth();
@@ -80,14 +84,20 @@ const Home: React.FC = () => {
         }
       }
 
+      setAndroidLocationPermissionIsGranted(true);
+    }
+
+    loadPosition();
+  }, []);
+
+  useEffect(() => {
+    if (androidLocationPermissionIsGranted) {
       Geolocation.getCurrentPosition((info) => {
         const { latitude, longitude } = info.coords;
         setInitialPosition([latitude, longitude]);
       });
     }
-
-    loadPosition();
-  }, []);
+  }, [androidLocationPermissionIsGranted]);
 
   useEffect(() => {
     api.get('services').then((response) => {
@@ -140,7 +150,7 @@ const Home: React.FC = () => {
           />
         </BackButton>
         <Title>Selecione os serviços desejados</Title>
-        <Image source={{ uri: 'http://192.168.1.88:3333/files/leila.png' }} />
+        {/* <Image source={{ uri: 'http://192.168.1.88:3333/files/leila.png' }} /> */}
       </Header>
       <MapContainer>
         {initialPosition[0] !== 0 && (
@@ -153,6 +163,7 @@ const Home: React.FC = () => {
               latitudeDelta: 0.014,
               longitudeDelta: 0.014,
             }}
+            showsUserLocation
           >
             {providers.map((provider) => (
               <Marker
@@ -181,14 +192,14 @@ const Home: React.FC = () => {
       <ServiceListContainer>
         <ServicesList
           data={services}
-          keyExtractor={(service) => String(service.id)}
+          keyExtractor={(service: Service) => String(service.id)}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item: service }) => (
+          renderItem={({ item: service }: { item: Service }) => (
             <ServiceContainer
               onPress={() => handleSelectService(service.id)}
               selected={!!selectedServices.find((s) => s === service.id)}
-              activeOpacity={0.6}
+              activeOpacity={0.7}
             >
               <ServiceAvatar uri={service.image_url} />
               <ServiceNameContainer>

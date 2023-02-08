@@ -6,21 +6,28 @@ import {
   Platform,
   TextInput,
   Alert,
+  Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
-
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import CountryFlag from 'react-native-country-flag';
+
 import api from '../../services/api';
-
 import getValidationErrors from '../../utils/getValidationErrors';
-
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Title, BackButton, Footer } from './styles';
+import {
+  Container,
+  Title,
+  BackButton,
+  Footer,
+  PhoneDDIContainer,
+  DDIInput,
+} from './styles';
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
@@ -36,6 +43,7 @@ const SignUp: React.FC = () => {
   interface SignUpFormData {
     name: string;
     cpf: string;
+    phoneNumber: string;
     email: string;
     confirmEmail: string;
     password: string;
@@ -74,7 +82,15 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        console.log({
+          ...data,
+          phoneNumber: `+55${data.phoneNumber}`,
+        });
+
+        await api.post('/users', {
+          ...data,
+          phoneNumber: `+55${data.phoneNumber}`,
+        });
 
         Alert.alert(
           'Cadastro realizado com sucesso!',
@@ -140,6 +156,11 @@ const SignUp: React.FC = () => {
                 phoneNumberInputRef.current?.focus();
               }}
             />
+
+            <PhoneDDIContainer>
+              <CountryFlag isoCode="br" size={14} style={{ marginRight: 16 }} />
+              <DDIInput value="+55" editable={false} />
+            </PhoneDDIContainer>
 
             <Input
               ref={phoneNumberInputRef}

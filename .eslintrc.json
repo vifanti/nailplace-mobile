@@ -45,7 +45,8 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "react/no-unused-prop-types": "off"
   },
   "settings": {
     "import/resolver": {
